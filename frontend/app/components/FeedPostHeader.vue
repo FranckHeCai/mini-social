@@ -6,7 +6,7 @@
           <img class="h-full w-full" src="../assets/feitan.jpg" alt="profile-picture">
         </div>
       </div>
-      <input v-model="postText" class="flex-1 text-xl font-light focus:outline-0" type="text" placeholder="What's happening?">
+      <input v-model="postText" class="flex-1 text-lg sm:text-xl font-light focus:outline-0" type="text" placeholder="What's happening?">
     </div>
     <div class="flex">
       <div class="flex-1">

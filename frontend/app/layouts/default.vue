@@ -1,9 +1,9 @@
 <template>
-  <div class="flex justify-end min-h-screen bg-black text-stone-50">
+  <div class="flex justify-end min-h-screen bg-black text-primary">
     <SideBar />
 
     <!-- Main Content -->
-    <main class="max-w-7xl w-full h-screen overflow-y-auto">
+    <main class="max-w-6xl w-full h-screen overflow-y-auto">
       <slot></slot>
     </main>
   </div>

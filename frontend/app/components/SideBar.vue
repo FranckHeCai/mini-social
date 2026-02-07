@@ -1,6 +1,6 @@
 <template>
       <!-- Sidebar -->
-    <aside class="max-w-3xs sm:w-full p-4">
+    <aside class="relative max-w-3xs sm:w-full p-3 flex flex-col justify-between">
       <nav class="flex flex-col gap-3 items-center sm:items-start">
         <NuxtLink
           to="/"
@@ -29,6 +29,8 @@
           <p class="text-lg  font-bold hidden sm:inline">Post</p>
         </button>
       </nav>
+      <SidebarProfileButton username="Zuko" tag="@zuko_avatar"/>
+      <!-- <LogoutPopup /> -->
     </aside>
 </template>
 

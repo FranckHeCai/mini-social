@@ -6,5 +6,6 @@ export interface Post {
   pp: string
   user: User
   content: string
+  file?: File
 }
 

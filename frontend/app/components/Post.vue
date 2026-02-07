@@ -7,10 +7,12 @@ const props = defineProps<{
   }
   content: string
   files?: File
+  posted?: Date
 }>()
 
 const username = ref('INKU')
 const tag = ref<`@${string}`>('@Inku_fr')
+const posted = ref('5h')
 </script>
 
 <template>
@@ -21,12 +23,12 @@ const tag = ref<`@${string}`>('@Inku_fr')
       </div>
     </div>
     <div class="">
-      <div class="flex gap-1 items-center">
+      <div class="flex flex-wrap gap-1 items-center">
         <h3 class="font-medium">{{ props.user.username }}</h3>
         <div class="size-5">
           <img class="h-full w-full" src="../assets/x_verified_badge.svg" alt="">
         </div>
-        <p class="text-gray-500">{{ props.user.tag }} · 5h</p>
+        <p class="text-secondary">{{ props.user.tag }} · {{ posted }}</p>
       </div>
       <p>
         {{ props.content }}
@@ -36,7 +38,7 @@ const tag = ref<`@${string}`>('@Inku_fr')
           <img src="../assets/mock_img.jfif" alt="">
         </div>
       </div>
-      <div class="mt-3 text-gray-500 flex justify-between">
+      <div class="mt-3 text-secondary flex justify-between">
         <button class="flex items-center gap-1 hover:text-blue-400 hover:bg-blue-500/10 rounded-full transition-all duration-200">
           <div class="size-5">
             <IconsComment />

@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+@layer components {
+  .text-secondary {
+    color: #737373;
+  }
+  .text-primary {
+    color: #fafaf9;
+  }
+}

@@ -21,9 +21,9 @@ const content = ref(`「OFFICIEL」L'ANIME ONE PIECE HEROINES SORTIRA LE 5 JUILL
 
 </script>
 <template>
-  <div class="relative max-w-3xl border-x border-white/20">
+  <div class="relative max-w-150 border-x border-white/20">
     <!-- FEED HEADER -->
-    <FeedHeader />
+    <FeedHeader page="For you" />
     <!-- CREATE POST HEADER -->
     <FeedPostHeader />
 
