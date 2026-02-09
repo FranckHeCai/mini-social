@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sess
 
 from fastapi_users.db import SQLAlchemyUserDatabase
 from fastapi import Depends
-from src.infrastructure.orm import User, Base
+from src.infrastructure.orm import User, Post, Base
 import os
 from dotenv import load_dotenv
 import urllib.parse
@@ -24,7 +24,11 @@ async_sessionmaker = async_sessionmaker(engine, expire_on_commit=False)
 
 async def create_db_tables():
   async with engine.begin() as conn:
-    await conn.run_sync(Base.metadata.create_all)
+      # # Drop all tables
+      # await conn.run_sync(Base.metadata.drop_all)
+      # Create all tables
+      await conn.run_sync(Base.metadata.create_all)
+  print("✅ Database creation complete")
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
   async with async_sessionmaker() as session:
