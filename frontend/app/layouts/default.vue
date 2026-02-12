@@ -3,7 +3,7 @@
     <SideBar />
 
     <!-- Main Content -->
-    <main class="max-w-6xl w-full h-screen overflow-y-auto">
+    <main class="max-w-6xl w-full h-screen overflow-y-auto border-x border-white/20">
       <slot></slot>
     </main>
   </div>

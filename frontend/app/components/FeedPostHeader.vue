@@ -1,3 +1,34 @@
+<script setup lang="ts">
+import { API_ROUTES } from '~/api/apiRoutes';
+import { fetch_with_token } from '~/api/fetch_with_token';
+import { fetchPosts } from '~/api/posts/fetchPosts';
+import type { apiGenericResponse } from '~/type';
+
+const feedType = ref<'fy' | 'following'>('fy')
+const postText = ref('')
+
+
+
+const handleCreatePost = async () => {
+  try {
+    console.log('creating post')
+    const response: apiGenericResponse = await fetch_with_token(`${API_ROUTES.posts}`, {
+      method: 'POST',
+      body: {
+        title: 'new post',
+        content: postText.value
+      }
+    })
+
+    console.log(response.message)
+    fetchPosts()
+
+  } catch (error) {
+    console.error(error)
+  }
+}
+</script>
+
 <template>
   <div class="p-4 flex flex-col gap-3 border-b border-white/20">
     <div class="flex gap-3">
@@ -11,19 +42,10 @@
     <div class="flex">
       <div class="flex-1">
       </div>
-      <button @click="handlePost" :disabled="postText.length===0" class="px-4 py-1 rounded-full bg-stone-50 text-black font-bold disabled:opacity-50 transition-all duration-150">Post</button>
+      <button @click="handleCreatePost" :disabled="postText.length===0" class="px-4 py-1 rounded-full bg-stone-50 text-black font-bold disabled:opacity-50 transition-all duration-150">Post</button>
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-const feedType = ref<'fy' | 'following'>('fy')
-const postText = ref('')
-
-const handlePost = () => {
-  console.log('CREATING POST')
-}
-</script>
 
 <style scoped>
 

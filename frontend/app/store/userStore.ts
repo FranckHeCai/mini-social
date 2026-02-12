@@ -1,15 +1,16 @@
 import { defineStore } from "pinia";
+import type { User } from "~/type";
 
 export const useUserStore = defineStore('user-store', ()=>{
-  const user = ref({
-    username: 'Zuko',
-    tag: '@zuko_avatar',
-    followers: 0,
-    following: 0
-  })
-  const setUser = (newUser: {username: string, tag: string, followers: number, following: number}) => {
+  const loading = ref(false)
+  const user = ref<User | null>(null)
+  const setUser = (newUser: User) => {
     user.value = newUser
   }
 
-  return { user, setUser }
+  const clearUser = () =>{
+    user.value = null
+  }
+
+  return { user, setUser, clearUser, loading }
 })

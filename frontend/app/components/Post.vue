@@ -1,10 +1,9 @@
 <script setup lang="ts">
+import type { User } from '~/type';
+
 const props = defineProps<{
   pp: string
-  user: {
-    username: string
-    tag: string
-  }
+  user: User
   content: string
   files?: File
   posted?: Date
@@ -28,7 +27,10 @@ const posted = ref('5h')
         <div class="size-5">
           <img class="h-full w-full" src="../assets/x_verified_badge.svg" alt="">
         </div>
-        <p class="text-secondary">{{ props.user.tag }} · {{ posted }}</p>
+        <p class="text-secondary">
+          <span v-if="$props.user.tag">{{ props.user.tag }}</span>
+          <span v-else>@{{ props.user.username }}</span>
+          · {{ posted }}</p>
       </div>
       <p>
         {{ props.content }}

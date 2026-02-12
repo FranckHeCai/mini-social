@@ -24,8 +24,12 @@ router= APIRouter(
 )
 
 @router.get('/')
-async def get_all_posts(session: AsyncSession = Depends(get_async_session)) -> List[PostOutSchema]:
-  post_query = select(Post).order_by(Post.created_at.desc())
+async def get_all_posts(user: User = Depends(current_active_user) ,session: AsyncSession = Depends(get_async_session)) -> List[PostOutSchema]:
+  post_query = (
+    select(Post)
+    # .where(Post.user_id != user.id)
+    .order_by(Post.created_at.desc())
+  )
   result = await session.scalars(post_query)
 
   posts = [post.to_dict() for post in result]
@@ -57,7 +61,6 @@ async def get_user_posts(user_id: str, session: AsyncSession = Depends(get_async
 
 @router.post('/')
 async def create_post(
-  title: str = Form(...), 
   content: str = Form(...), 
   file: Optional[UploadFile] = File(None), 
   session: AsyncSession = Depends(get_async_session),
@@ -93,7 +96,7 @@ async def create_post(
   
   new_post = Post(
     user_id = user.id,
-    title= title,
+    user= user,
     content=content,
     file_path=file_path,
     file_name=file_name

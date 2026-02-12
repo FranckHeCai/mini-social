@@ -19,11 +19,16 @@ export default defineNuxtConfig({
     assets: '/<rootDir>/assets'
   },
   css:['./main.css'],
-  modules:['@pinia/nuxt'],
+  modules:['@pinia/nuxt', '@vueuse/nuxt'],
   vite: {
     plugins: [
       tailwindcss(),
     ],
+  },
+  runtimeConfig: {
+    public: {
+      CLIENT: process.env.CLIENT
+    }
   },
   ssr: false
 })

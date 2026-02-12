@@ -1,5 +1,5 @@
 import type { Post } from './../type';
-export const posts:Post[] = [
+export const mock_posts = [
   {
     pp: '/assets/feitan.jpg',
     user: {

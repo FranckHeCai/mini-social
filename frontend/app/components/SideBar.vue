@@ -1,4 +1,19 @@
 <script setup lang="ts">
+import { onClickOutside } from '@vueuse/core';
+import { useDrawerStore } from '~/store/drawerStore';
+
+
+const drawerStore = useDrawerStore()
+const {showPopup} = storeToRefs(drawerStore)
+const popupRef = useTemplateRef('popupRef')
+
+const handleTogglePopup = () => {
+  drawerStore.togglePopup()
+}
+
+onClickOutside(popupRef, (event) => {
+  drawerStore.closePopup()
+})
 
 </script>
 <template>
@@ -44,8 +59,10 @@
           <p class="text-lg  font-bold hidden sm:inline">Post</p>
         </button>
       </nav>
-      <SidebarProfileButton username="Zuko" tag="@zuko_avatar"/>
-      <!-- <LogoutPopup /> -->
+      <SidebarProfileButton @click="handleTogglePopup" username="Zuko" tag="@zuko_avatar"/>
+      <div class="absolute bottom-20 left-5" ref="popupRef" v-if="showPopup">
+        <LogoutPopup />
+      </div>
     </aside>
 </template>
 
