@@ -67,7 +67,7 @@ onMounted(async () => {
 
 </script>
 <template>
-  <div class="relative max-w-150 border-r border-white/20">
+  <div class="relative max-w-150 border-r border-white/20 flex flex-col">
     <!-- <button @click="handleLogin" class="bg-stone-50 p-3 sm:py-3 sm:px-0 sm:w-full rounded-full text-black font-bold">LOGIN</button>
     <button @click="getPosts" class="bg-stone-50 p-3 sm:py-3 sm:px-0 sm:w-full rounded-full text-black font-bold">get posts</button> -->
     <!-- FEED HEADER -->
@@ -77,9 +77,12 @@ onMounted(async () => {
 
     <!-- FEED -->
     <LoadingSpinner v-if="loading" />
-    <ul v-else>
-      <Post v-for="post in posts" :key="post.id" pp="../assets/feitan.jpg" :user="post.user" :content="post.content" />
+    <ul v-else-if="posts.length > 0">
+      <Post v-for="post in posts" :key="post.id" :post />
     </ul>
+    <div v-else class="flex flex-1 justify-center items-center">
+      <p class="text-secondary text-center">No posts available</p>
+    </div>
     <!-- POST -->
     <!-- <ul>
       <Post v-for="post in mock_posts" :key="post.user.tag" pp="../assets/feitan.jpg" :user="post.user" :content="post.content" />

@@ -52,6 +52,7 @@ async def get_user_posts(user_id: str, session: AsyncSession = Depends(get_async
   post_query = (
     select(Post)
     .where(Post.user_id == user_id)
+    .order_by(Post.created_at.desc())
   )
   result = await session.scalars(post_query)
 

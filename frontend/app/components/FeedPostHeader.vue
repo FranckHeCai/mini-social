@@ -6,21 +6,24 @@ import type { apiGenericResponse } from '~/type';
 
 const feedType = ref<'fy' | 'following'>('fy')
 const postText = ref('')
-
+const selectedFile = ref(null)
 
 
 const handleCreatePost = async () => {
   try {
-    console.log('creating post')
+    const formData = new FormData()
+    formData.append('content', postText.value)
+
+    if(selectedFile.value){
+      formData.append('file', selectedFile.value)
+    }
     const response: apiGenericResponse = await fetch_with_token(`${API_ROUTES.posts}`, {
       method: 'POST',
-      body: {
-        title: 'new post',
-        content: postText.value
-      }
+      body: formData
     })
 
     console.log(response.message)
+    postText.value = ''
     fetchPosts()
 
   } catch (error) {

@@ -2,19 +2,16 @@
 import { useUserStore } from '~/store/userStore';
 import { mock_posts } from '~/data/mock_posts';
 import { fetch_user_info } from '~/api/fetch_user_info';
+import { fetchUserPosts } from '~/api/posts/fetchUserPosts';
 
 const userStore = useUserStore()
-const {user, loading} = storeToRefs(userStore)
+const {user, loading, userPosts} = storeToRefs(userStore)
 
 onMounted(async () =>{
   if (!user.value){
-    try {
-      loading.value = true
-      await fetch_user_info()
-      loading.value = false
-    } catch (error) { 
-      console.error(error)
-    }
+    fetch_user_info()
+  } else {
+    fetchUserPosts()
   }
 })
 </script>
@@ -46,10 +43,10 @@ onMounted(async () =>{
       <!-- Post Section -->
        <FeedHeader page="Posts" />
        <ul>
-        <Post v-for="post in mock_posts" :key="post.user.tag" pp="../assets/feitan.jpg" :user="post.user" :content="post.content" />
+        <Post v-for="post in userPosts" :key="post.id" :post />
       </ul>
-        </div>
     </div>
+  </div>
 </template>
 
 <style scoped>

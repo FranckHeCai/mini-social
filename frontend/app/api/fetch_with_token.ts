@@ -15,7 +15,6 @@ export const fetch_with_token = async <T = any>(
   const { token } = storeToRefs(authStore)
 
   const headers = {
-    'Content-Type': 'application/json',
     ...(token.value ? { 'Authorization': `Bearer ${token.value}` } : {}),
     ...(options.headers || {})
   }

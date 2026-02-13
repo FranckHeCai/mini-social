@@ -1,8 +1,10 @@
 <script setup lang="ts">
 const props = defineProps<{
   username: string
-  tag: string
+  // tag: string
 }>()
+
+
 </script>
 
 <template>
@@ -10,7 +12,7 @@ const props = defineProps<{
     <ProfilePicture size="11" src="../assets/feitan.jpg" />
     <div class="flex-1 hidden sm:inline-block">
       <h3 class="text-start">{{ props.username }}</h3>
-      <p class="text-start text-secondary">{{ props.tag }}</p>
+      <p class="text-start text-secondary">@{{ formatUsername(props.username) }}</p>
     </div>
 
     <IconsDots class="size-5 hidden sm:block" />
