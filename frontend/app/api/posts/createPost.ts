@@ -4,12 +4,10 @@ import { API_ROUTES } from "../apiRoutes"
 
 export const createPost = async (data: FormData) =>{
   try {
-
     const response: apiGenericResponse = await fetch_with_token(`${API_ROUTES.posts}`, {
       method: 'POST',
       body: data
     })
-
     console.log(response.message)
   } catch (error) {
     console.error(error)

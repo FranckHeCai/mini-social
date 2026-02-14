@@ -13,6 +13,8 @@ export const fetch_user_info = async () =>{
   
     userStore.setUser(userInfo)
     userStore.loading = false
+
+    console.log('current user: ', userStore.user)
     
   } catch (error) {
     console.error(error)

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Login } from '~/api/auth/login'
 import { fetch_token } from '~/api/fetch_token'
 import { fetch_user_info } from '~/api/fetch_user_info'
 import Logo from '~/components/Icons/Logo.vue'
@@ -29,10 +30,13 @@ const handleLogin = async () => {
   loading.value = true
   try {
     // LOGIN API CALL
-    const response: string = await fetch_token({username: form.username, password: form.password})
+    // const response: string = await fetch_token({username: form.username, password: form.password})
     
-    const newToken = response
-    authStore.setToken(newToken)
+    // const newToken = response
+    // authStore.setToken(newToken)
+    authStore.clearToken()
+    userStore.clearUser()
+    await Login({username: form.username, password: form.password})
 
     await fetch_user_info()
     // On success, redirect
