@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { API_ROUTES } from '~/api/apiRoutes';
 import { fetch_with_token } from '~/api/fetch_with_token';
+import { createPost } from '~/api/posts/createPost';
 import { fetchPosts } from '~/api/posts/fetchPosts';
 import type { apiGenericResponse } from '~/type';
 
@@ -17,15 +18,10 @@ const handleCreatePost = async () => {
     if(selectedFile.value){
       formData.append('file', selectedFile.value)
     }
-    const response: apiGenericResponse = await fetch_with_token(`${API_ROUTES.posts}`, {
-      method: 'POST',
-      body: formData
-    })
-
-    console.log(response.message)
+    await createPost(formData)
     postText.value = ''
     fetchPosts()
-
+    
   } catch (error) {
     console.error(error)
   }

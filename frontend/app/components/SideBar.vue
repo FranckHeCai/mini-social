@@ -11,6 +11,10 @@ const popupRef = useTemplateRef('popupRef')
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
 
+const handleCreatePost = () =>{
+  drawerStore.togglePostPopup()
+}
+
 const handleTogglePopup = () => {
   drawerStore.togglePopup()
 }
@@ -60,7 +64,7 @@ onClickOutside(popupRef, (event) => {
         </NuxtLink>
 
         <!-- CREATE POST BUTTON -->
-        <button class="bg-stone-50 p-3 sm:py-3 sm:px-0 sm:w-full rounded-full text-black cursor-pointer hover:opacity-80 transition-all duration-200">
+        <button @click="handleCreatePost" class="bg-stone-50 p-3 sm:py-3 sm:px-0 sm:w-full rounded-full text-black cursor-pointer hover:opacity-80 transition-all duration-200">
           <IconsCreate class="size-6 sm:hidden" />
           <p class="text-lg  font-bold hidden sm:inline">Post</p>
         </button>
