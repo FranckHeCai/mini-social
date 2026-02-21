@@ -5,7 +5,10 @@ import os
 from pathlib import Path
 import tempfile
 import shutil
-
+import boto3
+from botocore.exceptions import ClientError
+import logging
+from dotenv import load_dotenv
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -14,6 +17,12 @@ from src.db import get_async_session
 from src.users import current_active_user
 from src.infrastructure.orm import Post, User
 from src.schemas import PostOutSchema, PostSchema
+load_dotenv()
+
+s3_bucket_name = os.getenv('S3_BUCKET_NAME', 'mini-social-bucket')
+s3_access_key = os.getenv('AWS_ACCESS_KEY_ID')
+s3_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+s3_region = os.getenv('AWS_REGION', 'eu-north-1')
 
 router= APIRouter(
   prefix='/posts',
@@ -73,24 +82,46 @@ async def create_post(
   file_name = None
 
   if file:
-
-    temp_file_path = None
+    s3 = boto3.client(
+      's3',
+      aws_access_key_id=s3_access_key,
+      aws_secret_access_key=s3_secret_access_key,
+      region_name=s3_region
+    )
 
     try:
-      with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext()[1]) as temp_file:
-        temp_file_path = temp_file.name
-        shutil.copyfileobj(file.file, temp_file)
+      with tempfile.NamedTemporaryFile(delete=False) as tmp:
+          tmp.write(await file.read())
+          tmp_path = tmp.name
       
-      #UPLOAD FILE TO S3 LOGIC
+      # Upload to S3 using the temp file path
+      s3.upload_file(tmp_path, s3_bucket_name, os.path.basename(file.filename))
+      
+      # Optionally delete the temp file
+      os.remove(tmp_path)
+
+      uploaded_file_url = f"https://{s3_bucket_name}.s3.{s3_region}.amazonaws.com/{file.filename}"
+      print('FILE URL: ', uploaded_file_url)
+      file_path = uploaded_file_url
+    except ClientError as e:
+      logging.error(e)
+    # temp_file_path = None
+
+    # try:
+    #   with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext()[1]) as temp_file:
+    #     temp_file_path = temp_file.name
+    #     shutil.copyfileobj(file.file, temp_file)
+      
+    #   #UPLOAD FILE TO S3 LOGIC
       
       
-    except Exception as e:
-      print(e)
-    finally:
-      if temp_file_path and os.path.exists(temp_file_path):
-        # os.remove(temp_file_path)
-        os.unlink(temp_file_path)
-      file.file.close()
+    # except Exception as e:
+    #   print(e)
+    # finally:
+    #   if temp_file_path and os.path.exists(temp_file_path):
+    #     # os.remove(temp_file_path)
+    #     os.unlink(temp_file_path)
+    #   file.file.close()
 
     # file_extension = Path(file.filename).suffix
     # unique_filename = f'{uuid.uuid4()}{file_extension}'
