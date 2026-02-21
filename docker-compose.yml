@@ -1,0 +1,41 @@
+services:
+  mini_social_frontend:
+    container_name: mini_social_frontend
+    build: ./frontend
+    ports:
+      - 3000:3000
+    depends_on:
+      - mini_social_backend
+    env_file:
+      - frontend/.env
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+  
+  mini_social_backend:
+    container_name: mini_social_backend
+    build: ./backend
+    ports:
+      - 8000:8000
+    depends_on:
+      - mini_social_db
+    env_file:
+      - backend/.env
+    volumes:
+      - ./backend:/app
+
+  mini_social_db:
+    image: postgres:15-alpine
+    container_name: mini_social_db
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=2654@ABPk
+      - POSTGRES_DB=mini-social-media
+    volumes:
+      - db_data:/var/lib/postgresql/db_data
+
+volumes:
+  db_data:

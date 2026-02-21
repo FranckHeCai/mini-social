@@ -62,7 +62,7 @@ onClickOutside(popupRef, ()=>{
           <p class="text-secondary">
             <span v-if="props.post.user.tag">{{ props.post.user.tag }}</span>
             <span v-else>@{{ props.post.user.username }}</span>
-            · {{ posted }}
+            · {{ formatPostDate(props.post.created_at) }}
           </p>
         </div>
         <button v-if="props.post.user.id === user?.id" @click="()=>{showPostPopup = true}" class="size-7 text-secondary rounded-full p-1 hover:bg-blue-500/30 hover:text-blue-400 transition-all duration-200 cursor-pointer">
