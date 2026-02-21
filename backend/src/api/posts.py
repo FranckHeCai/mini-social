@@ -77,12 +77,12 @@ async def create_post(
     temp_file_path = None
 
     try:
-      # with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext()[1]) as temp_file:
-      #   temp_file_path = temp_file.name
-      #   shutil.copyfileobj(file.file, temp_file)
+      with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext()[1]) as temp_file:
+        temp_file_path = temp_file.name
+        shutil.copyfileobj(file.file, temp_file)
       
       #UPLOAD FILE TO S3 LOGIC
-
+      
       
     except Exception as e:
       print(e)
