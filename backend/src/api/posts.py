@@ -95,14 +95,18 @@ async def create_post(
           tmp_path = tmp.name
       
       # Upload to S3 using the temp file path
-      s3.upload_file(tmp_path, s3_bucket_name, os.path.basename(file.filename))
+      s3.upload_file(tmp_path, s3_bucket_name, os.path.basename(file.filename),
+        ExtraArgs={
+          "ContentType": file.content_type
+        }
+      )
       
       # Optionally delete the temp file
       os.remove(tmp_path)
 
       uploaded_file_url = f"https://{s3_bucket_name}.s3.{s3_region}.amazonaws.com/{file.filename}"
-      print('FILE URL: ', uploaded_file_url)
       file_path = uploaded_file_url
+      file_name = file.filename
     except ClientError as e:
       logging.error(e)
     # temp_file_path = None

@@ -52,7 +52,7 @@ onClickOutside(popupRef, ()=>{
           <img class="h-full w-full" src="../assets/feitan.jpg" alt="profile-picture">
       </div>
     </div>
-    <div class="">
+    <div class="flex-1">
       <div class="flex justify-between items-center">
         <div class="flex flex-wrap gap-1 items-center">
           <h3 class="font-medium">{{ props.post.user.username }}</h3>
@@ -72,10 +72,16 @@ onClickOutside(popupRef, ()=>{
       <p>
         {{ props.post.content }}
       </p>
-      <div class="mt-3">
-        <div class="rounded-lg overflow-hidden sm:max-w-2/3">
+      <!-- UPLOADED IMAGE -->
+      <div v-if="props.post.file_path" class="mt-3">
+        <NuxtLink :to="props.post.file_path" target="blank">
+          <div  class="rounded-lg overflow-hidden sm:max-w-2/3">
+            <img :src="props.post.file_path" alt="">
+          </div>
+        </NuxtLink>
+        <!-- <div class="rounded-lg overflow-hidden sm:max-w-2/3">
           <img src="../assets/mock_img.jfif" alt="">
-        </div>
+        </div> -->
       </div>
       <div class="mt-3 text-secondary flex justify-between">
         <button class="flex items-center gap-1 hover:text-blue-400 hover:bg-blue-500/10 rounded-full transition-all duration-200">

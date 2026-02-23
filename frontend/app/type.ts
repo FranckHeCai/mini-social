@@ -18,6 +18,7 @@ export interface Post {
   user: User
   created_at: Date
   file?: File
+  file_path: string
 }
 
 export type Posts = Post[]

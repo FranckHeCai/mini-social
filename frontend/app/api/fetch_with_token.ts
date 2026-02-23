@@ -27,6 +27,11 @@ export const fetch_with_token = async <T = any>(
     return response
   } catch (error) {
     console.error('API fetch error:', error)
+    if(error.status === 401){
+      console.error('Token expired, redirecting to login page...')
+      authStore.clearToken()
+      navigateTo('/login')
+    }
     throw error
   }
 }

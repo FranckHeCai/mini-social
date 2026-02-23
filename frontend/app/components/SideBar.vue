@@ -14,7 +14,13 @@ const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
 
 const postText = ref('')
-const selectedFile = ref(null)
+const selectedFile = ref<File|undefined>(undefined)
+const imagePreview = computed(()=>{
+  if(selectedFile.value?.type.startsWith('image')){
+    return URL.createObjectURL(selectedFile.value)
+  }
+})
+
 const textareaRef = ref<HTMLTextAreaElement | null>(null)
 
 const handleCreatePostButton = () =>{
@@ -40,6 +46,7 @@ const handleCreatePost = async () =>{
     }
     await createPost(formData)
     postText.value = ''
+    selectedFile.value = undefined
     drawerStore.closePostPopup()
     fetchPosts()
 
@@ -59,6 +66,19 @@ const autoResize = () => {
 
   el.style.height = 'auto'          // reset
   el.style.height = el.scrollHeight + 'px' // grow
+}
+
+const handleFileSelect = (e: Event) => {
+  const input = e.target as HTMLInputElement
+  if (!input.files) return
+  // const filesAsArray = Array.from(input?.files || [])
+  selectedFile.value = input.files[0]
+  console.log('INPUT: ', input.files)
+  console.log('SELECTED FILE: ', selectedFile.value)
+}
+
+const removeFile = () =>{
+  selectedFile.value = undefined
 }
 
 watch(postText, async () => {
@@ -128,7 +148,6 @@ watch(postText, async () => {
             <IconsCross class="hidden sm:block size-5" />
             <IconsLeftArrow class="sm:hidden size-8" />
           </button>
-          <button @click="handleCreatePost" :disabled="postText.length===0" class="sm:hidden px-4 py-1 rounded-full bg-stone-50 text-black font-bold disabled:opacity-50 transition-all duration-150">Post</button>
         </div>
         <div class="mt-5 flex flex-col gap-3">
           <div class="flex gap-3 min-h-40">
@@ -140,15 +159,28 @@ watch(postText, async () => {
             </div>
 
             <!-- INPUT TEXT -->
-            <textarea ref="textareaRef" v-model="postText" class="flex-1 text-lg resize-none sm:text-xl font-light focus:outline-0" type="text" placeholder="What's happening?"></textarea>
+            <div class="flex-1 flex-col">
+              <textarea ref="textareaRef" v-model="postText" class="w-full flex-1 text-lg resize-none sm:text-xl font-light focus:outline-0" type="text" placeholder="What's happening?">
+              </textarea>
+              <div v-if="imagePreview && selectedFile" class="relative">
+                <img class="rounded-2xl" :src="imagePreview" :alt="selectedFile.name">
+                <button @click="removeFile" class="absolute top-1 right-1 size-7.5 p-1.5 bg-black/70 rounded-full cursor-pointer backdrop-blur-md">
+                  <IconsCross />
+                </button>
+              </div>
+            </div>
           </div>
           <div class="border-b border-white/20">
 
           </div>
           <div class="flex">
             <div class="flex-1">
+              <label for="file" >
+                <IconsMedia class="size-9 p-2 text-blue-400 hover:bg-blue-400/20 transition-all duration-200 rounded-full" />
+              </label>
+              <input @change="handleFileSelect" hidden id="file" type="file">
             </div>
-            <button @click="handleCreatePost" :disabled="postText.length===0" class="hidden sm:block px-4 py-1 rounded-full bg-stone-50 text-black font-bold disabled:opacity-50 transition-all duration-150">Post</button>
+            <button @click="handleCreatePost" :disabled="postText.length===0" class="hidden sm:block px-4 py-1 rounded-full bg-stone-50 text-black font-bold cursor-pointer disabled:opacity-50 transition-all duration-150">Post</button>
           </div>
         </div>
       </div>
